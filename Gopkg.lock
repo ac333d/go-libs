@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:824263ceefe16a3a53539a46f9be16c0c4f04ecbbcecebf0c5d9e263e332e340"
+  name = "github.com/assembla/cony"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "dd62697b0adb9adfda8589520cb85f4cbc2361f1"
+  version = "v0.3.2"
+
+[[projects]]
   digest = "1:35564f1cd08e1163bf327e6f595b9e596c4470a77f7f13fe6421236ea99e5966"
   name = "github.com/aws/aws-sdk-go"
   packages = [
@@ -62,15 +70,25 @@
   pruneopts = "UT"
   revision = "c2b33e84"
 
+[[projects]]
+  branch = "master"
+  digest = "1:525ac3364813b4688df380594e562133e07830dfce0722effda64b37634c13d0"
+  name = "github.com/streadway/amqp"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a314942b2fd9dde7a3f70ba3f1062848ce6eb392"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/assembla/cony",
     "github.com/aws/aws-sdk-go/aws",
     "github.com/aws/aws-sdk-go/aws/credentials",
     "github.com/aws/aws-sdk-go/aws/session",
     "github.com/aws/aws-sdk-go/service/s3",
     "github.com/gomodule/redigo/redis",
+    "github.com/streadway/amqp",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
