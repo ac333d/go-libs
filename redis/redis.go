@@ -9,7 +9,7 @@ import (
 )
 
 // Session - Session
-type Session redis.Conn
+type Session *redis.Pool
 
 // Init - Connects to redis
 func Init(host string, port int, password string, dbType int) (Session, error) {
@@ -56,7 +56,7 @@ func InitPool(host string, port int, password string, dbType int) (*redis.Pool, 
 }
 
 // Ping - Ping
-func Ping(pool *redis.Pool) error {
+func Ping(pool Session) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -68,7 +68,7 @@ func Ping(pool *redis.Pool) error {
 }
 
 // Get - Get
-func Get(pool *redis.Pool, key string) ([]byte, error) {
+func Get(pool Session, key string) ([]byte, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -81,7 +81,7 @@ func Get(pool *redis.Pool, key string) ([]byte, error) {
 }
 
 // Set - Set
-func Set(pool *redis.Pool, key string, value []byte) error {
+func Set(pool Session, key string, value []byte) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -93,7 +93,7 @@ func Set(pool *redis.Pool, key string, value []byte) error {
 }
 
 // HGet - HGet
-func HGet(pool *redis.Pool, key, field string) (string, error) {
+func HGet(pool Session, key, field string) (string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -106,7 +106,7 @@ func HGet(pool *redis.Pool, key, field string) (string, error) {
 }
 
 // HSet - HSet
-func HSet(pool *redis.Pool, key, field, value string) error {
+func HSet(pool Session, key, field, value string) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -118,7 +118,7 @@ func HSet(pool *redis.Pool, key, field, value string) error {
 }
 
 // HGetAll - HGetAll
-func HGetAll(pool *redis.Pool, key string) (map[string]string, error) {
+func HGetAll(pool Session, key string) (map[string]string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -138,7 +138,7 @@ func HGetAll(pool *redis.Pool, key string) (map[string]string, error) {
 }
 
 // HSetAll - HSetAll
-func HSetAll(pool *redis.Pool, key string, data map[string]string) error {
+func HSetAll(pool Session, key string, data map[string]string) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -152,7 +152,7 @@ func HSetAll(pool *redis.Pool, key string, data map[string]string) error {
 }
 
 // HCacheAll - HCacheAll
-func HCacheAll(pool *redis.Pool, key string, value map[string]string, expiry int) error {
+func HCacheAll(pool Session, key string, value map[string]string, expiry int) error {
 	if err := HSetAll(pool, key, value); err != nil {
 		return err
 	}
@@ -161,7 +161,7 @@ func HCacheAll(pool *redis.Pool, key string, value map[string]string, expiry int
 }
 
 // HDel - HDel
-func HDel(pool *redis.Pool, key, field string) error {
+func HDel(pool Session, key, field string) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -173,7 +173,7 @@ func HDel(pool *redis.Pool, key, field string) error {
 }
 
 // GetString - GetString
-func GetString(pool *redis.Pool, key string) (string, error) {
+func GetString(pool Session, key string) (string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -185,7 +185,7 @@ func GetString(pool *redis.Pool, key string) (string, error) {
 }
 
 // GetStrings - GetStrings
-func GetStrings(pool *redis.Pool, key string) ([]string, error) {
+func GetStrings(pool Session, key string) ([]string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -197,7 +197,7 @@ func GetStrings(pool *redis.Pool, key string) ([]string, error) {
 }
 
 // SetString - SetString
-func SetString(pool *redis.Pool, key, value string) error {
+func SetString(pool Session, key, value string) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -209,7 +209,7 @@ func SetString(pool *redis.Pool, key, value string) error {
 }
 
 // Expire - Expire
-func Expire(pool *redis.Pool, key string, ttl int) error {
+func Expire(pool Session, key string, ttl int) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -221,7 +221,7 @@ func Expire(pool *redis.Pool, key string, ttl int) error {
 }
 
 // TTL - TTL
-func TTL(pool *redis.Pool, key string) (int, error) {
+func TTL(pool Session, key string) (int, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -233,7 +233,7 @@ func TTL(pool *redis.Pool, key string) (int, error) {
 }
 
 // Exists - Exists
-func Exists(pool *redis.Pool, key string) (bool, error) {
+func Exists(pool Session, key string) (bool, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -245,7 +245,7 @@ func Exists(pool *redis.Pool, key string) (bool, error) {
 }
 
 // Delete - Delete
-func Delete(pool *redis.Pool, key string) error {
+func Delete(pool Session, key string) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -257,7 +257,7 @@ func Delete(pool *redis.Pool, key string) error {
 }
 
 // GetKeys - GetKeys
-func GetKeys(pool *redis.Pool, pattern string) ([]string, error) {
+func GetKeys(pool Session, pattern string) ([]string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -281,7 +281,7 @@ func GetKeys(pool *redis.Pool, pattern string) ([]string, error) {
 }
 
 // Incr - Incr
-func Incr(pool *redis.Pool, key string) (int, error) {
+func Incr(pool Session, key string) (int, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -293,7 +293,7 @@ func Incr(pool *redis.Pool, key string) (int, error) {
 }
 
 // Publish - Publish
-func Publish(pool *redis.Pool, key, val string) (int, error) {
+func Publish(pool Session, key, val string) (int, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -306,7 +306,7 @@ func Publish(pool *redis.Pool, key, val string) (int, error) {
 }
 
 // LPush - LPush
-func LPush(pool *redis.Pool, key, value string) error {
+func LPush(pool Session, key, value string) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -318,7 +318,7 @@ func LPush(pool *redis.Pool, key, value string) error {
 }
 
 // LPop - LPop
-func LPop(pool *redis.Pool, key string) (string, error) {
+func LPop(pool Session, key string) (string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -330,7 +330,7 @@ func LPop(pool *redis.Pool, key string) (string, error) {
 }
 
 // RPush - RPush
-func RPush(pool *redis.Pool, key, value string) error {
+func RPush(pool Session, key, value string) error {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -342,7 +342,7 @@ func RPush(pool *redis.Pool, key, value string) error {
 }
 
 // RPop - RPop
-func RPop(pool *redis.Pool, key string) (string, error) {
+func RPop(pool Session, key string) (string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -354,7 +354,7 @@ func RPop(pool *redis.Pool, key string) (string, error) {
 }
 
 // LRange - LRange
-func LRange(pool *redis.Pool, key string, start, end int) ([]string, error) {
+func LRange(pool Session, key string, start, end int) ([]string, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
@@ -366,7 +366,7 @@ func LRange(pool *redis.Pool, key string, start, end int) ([]string, error) {
 }
 
 // LLen - LLen
-func LLen(pool *redis.Pool, key string) (int, error) {
+func LLen(pool Session, key string) (int, error) {
 	conn := pool.Get()
 	defer conn.Close()
 
