@@ -13,14 +13,14 @@ import (
 type Session = *mgo.Session
 
 // Init - Connects to database
-func Init(host string, port int, username, password, authDB string, timeout int) (Session, error) {
+func Init(host string, port int, username, password, database string, timeout int) (Session, error) {
 	if timeout <= 0 {
 		timeout = 5
 	}
 	dialInfo := &mgo.DialInfo{
 		Addrs:    []string{host + ":" + strconv.Itoa(port)},
 		Timeout:  time.Duration(timeout) * time.Second,
-		Database: authDB,
+		Database: database,
 		Username: username,
 		Password: password,
 	}
