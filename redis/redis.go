@@ -12,7 +12,7 @@ import (
 type Session = *redis.Pool
 
 // Init - Connects to redis
-func Init(host string, port int, password string, dbType int) (Session, error) {
+func Init(host string, port int, password string, dbType int) (redis.Conn, error) {
 	connTimeout := 20000 * time.Hour
 	readTimeout := 2 * time.Second
 	writeTimeout := 2 * time.Second
