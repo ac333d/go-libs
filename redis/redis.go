@@ -34,25 +34,33 @@ func Init(host string, port int, password string, dbType int) (redis.Conn, error
 
 // InitPool - InitPool
 func InitPool(host string, port int, password string, dbType int) (*redis.Pool, error) {
-	return &redis.Pool{
+	pool := redis.Pool{
 		MaxIdle:     5,
 		MaxActive:   5,
 		IdleTimeout: 240 * time.Second,
-		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp", host+":"+strconv.Itoa(port))
-			if err != nil {
-				return nil, err
-			}
-			return c, err
-		},
-		TestOnBorrow: func(c redis.Conn, t time.Time) error {
-			if time.Since(t) < time.Minute {
-				return nil
-			}
-			_, err := c.Do("PING")
-			return err
-		},
-	}, nil
+	}
+	pool.Dial = func() (redis.Conn, error) {
+		c, err := redis.Dial("tcp", host+":"+strconv.Itoa(port))
+		if err != nil {
+			return nil, err
+		}
+		return c, err
+	}
+	pool.TestOnBorrow = func(c redis.Conn, t time.Time) error {
+		if time.Since(t) < time.Minute {
+			return nil
+		}
+		_, err := c.Do("PING")
+		return err
+	}
+
+	conn := pool.Get()
+	defer conn.Close()
+	_, err := conn.Do("PING")
+	if err != nil {
+		return &pool, err
+	}
+	return &pool, nil
 }
 
 // Ping - Ping
