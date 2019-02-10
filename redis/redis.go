@@ -9,7 +9,7 @@ import (
 )
 
 // Session - Session
-type Session *redis.Pool
+type Session = *redis.Pool
 
 // Init - Connects to redis
 func Init(host string, port int, password string, dbType int) (Session, error) {
